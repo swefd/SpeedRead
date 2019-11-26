@@ -9,8 +9,10 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -27,15 +29,14 @@ import java.io.FileReader;
 
 import static android.os.Environment.getExternalStorageDirectory;
 
-
-//test2
-
 public class MainActivity extends AppCompatActivity {
 
     private int STORAGE_PERMISSION_CODE = 1;
     private int READ_REQUEST_CODE = 42;
 
     private TextView txtShow;
+    private TextView txtPreView;
+    private TextView txtAfterView;
 
     private TextView SpeedView;
 
@@ -45,6 +46,8 @@ public class MainActivity extends AppCompatActivity {
     private Button Read_Btn;
     private Button Restart_Btn;
     private Button Open_File_Btn;
+
+    private ProgressBar progressBar;
 
     String path;
     Intent myFileIntent;
@@ -59,6 +62,11 @@ public class MainActivity extends AppCompatActivity {
     boolean GoBack = false;
     boolean work = false;
     int PauseIterator = 0;
+
+
+    Handler mHandler = new Handler();
+
+
 
     public MainActivity() {
     }
@@ -122,8 +130,15 @@ public class MainActivity extends AppCompatActivity {
 
         // requestPermissions(new String[{Manifest.permission.READ_EXTERNAL_STORAGE}, PERMISSION_REQUEST_STORAGE);
         txtShow = findViewById(R.id.textView);
+        txtPreView = findViewById(R.id.textPreView);
+        txtAfterView = findViewById(R.id.textAfterView);
+
         SpeedView = findViewById(R.id.SpeedView);
         SeekBar speedBar = findViewById(R.id.SpeedBar);
+
+        progressBar = findViewById(R.id.progressBar);
+
+
         //Відкриття файлу
         Txt_Path_Show = findViewById(R.id.Txt_Path_Show);
 
@@ -247,8 +262,21 @@ public class MainActivity extends AppCompatActivity {
 
                             if (!GoBack && work) {
                                 try {
-                                txtShow.setText(words[PauseIterator]);
+                                    mHandler.post(new Runnable(){
+                                        public void run() {
+                                            if(PauseIterator < words.length - 1 ) {
+                                                txtPreView.setText(words[PauseIterator + 1]);
 
+                                            }
+
+                                            txtShow.setText(words[PauseIterator]);
+
+                                            if(PauseIterator > 0) {
+                                                txtAfterView.setText(words[PauseIterator - 1]);
+                                                progressBar.setProgress(PauseIterator*100/words.length);
+                                            }
+                                        }
+                                    });
                                     Thread.sleep(speed);
                                 }
                                 catch (Exception e) {
@@ -258,6 +286,7 @@ public class MainActivity extends AppCompatActivity {
                                 if (PauseIterator < 5) PauseIterator = 0;
                                 else PauseIterator -= 5;
                                 GoBack = false;
+                                progressBar.setProgress(PauseIterator*100/words.length);
                                 try {
                                     Thread.sleep(3000);
                                 }
@@ -323,12 +352,13 @@ public class MainActivity extends AppCompatActivity {
             Read_Btn.setText("START");                                    //PAUSE TEXT
             Restart_Btn.setEnabled(true);
             work = false;                                                    //WORK
-
         }
+
     }
 
     public void RestatRead(View view) {
         PauseIterator = 0;
+        progressBar.setProgress(0);
         Toast.makeText(MainActivity.this, "Restart!", Toast.LENGTH_SHORT).show();
     }
 
