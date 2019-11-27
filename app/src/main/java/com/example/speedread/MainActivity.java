@@ -151,12 +151,12 @@ public class MainActivity extends AppCompatActivity {
             @SuppressLint("SetTextI18n")
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                if (progress > 10) {
+                if (progress > 50) {
                     speed = progress;
                     SpeedView.setText(progress + " ms");
                 }else {
-                    speed = 10;
-                    SpeedView.setText("10 ms");
+                    speed = 50;
+                    SpeedView.setText("50 ms");
                 }
             }
 
@@ -258,6 +258,8 @@ public class MainActivity extends AppCompatActivity {
                     public void run() {
 
 
+                        PauseIterator = 0;
+
                         for (; PauseIterator < words.length; PauseIterator++) {
 
                             if (!GoBack && work) {
@@ -270,10 +272,10 @@ public class MainActivity extends AppCompatActivity {
                                             }
 
                                             txtShow.setText(words[PauseIterator]);
-
+                                            progressBar.setProgress((int)(Math.ceil(PauseIterator*100/(words.length - 1))));
                                             if(PauseIterator > 0) {
                                                 txtAfterView.setText(words[PauseIterator - 1]);
-                                                progressBar.setProgress(PauseIterator*100/words.length);
+
                                             }
                                         }
                                     });
