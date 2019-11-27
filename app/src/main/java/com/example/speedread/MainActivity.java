@@ -45,7 +45,6 @@ public class MainActivity extends AppCompatActivity {
 
     private Button Read_Btn;
     private Button Restart_Btn;
-    private Button Open_File_Btn;
 
     private ProgressBar progressBar;
 
@@ -142,7 +141,7 @@ public class MainActivity extends AppCompatActivity {
         //Відкриття файлу
         Txt_Path_Show = findViewById(R.id.Txt_Path_Show);
 
-        Open_File_Btn = findViewById(R.id.Open_File_Btn);
+        Button open_File_Btn = findViewById(R.id.Open_File_Btn);
 
         Read_Btn = findViewById(R.id.Read);
         Restart_Btn = findViewById(R.id.Restart);
@@ -173,7 +172,7 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-        Open_File_Btn.setOnClickListener(new View.OnClickListener() {
+        open_File_Btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (ContextCompat.checkSelfPermission(MainActivity.this, Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
@@ -366,7 +365,9 @@ public class MainActivity extends AppCompatActivity {
 
 
     @SuppressLint("SetTextI18n")
-    public void enableButtons(int start, int restart, int open, int back){
+
+
+/*    public void enableButtons(int start, int restart, int open, int back){
 
         if(start == 1){
             Read_Btn.setText("START");                                    //PAUSE TEXT
@@ -377,7 +378,7 @@ public class MainActivity extends AppCompatActivity {
             Restart_Btn.setEnabled(false);
             Open_File_Btn.setEnabled(false);
         }
-    }
+    }*/
 
 
     public void Back(View view) {
