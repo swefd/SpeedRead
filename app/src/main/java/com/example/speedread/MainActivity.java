@@ -37,10 +37,7 @@ public class MainActivity extends AppCompatActivity {
     private TextView txtShow;
     private TextView txtPreView;
     private TextView txtAfterView;
-
     private TextView SpeedView;
-
-
     private TextView Txt_Path_Show;
 
     private Button Read_Btn;
@@ -49,27 +46,24 @@ public class MainActivity extends AppCompatActivity {
     private ProgressBar progressBar;
 
     String path;
-    Intent myFileIntent;
-
+    String temp;
     String sdcardPath = getExternalStorageDirectory().toString();
 
     //String charset = "UTF-8";
 
-    String temp;
+    Intent myFileIntent;
+
     int speed = 500;
+    int PauseIterator = 0;
 
     boolean GoBack = false;
     boolean work = false;
-    int PauseIterator = 0;
-
 
     Handler mHandler = new Handler();
 
 
-
     public MainActivity() {
     }
-
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
@@ -124,10 +118,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        //edit = (EditText)findViewById(R.id.editText);
-        // if(Build.VERSION.SDK_INT>= Build.VERSION_CODES.M && checkSelfPermission(Manifest.Permission.READ_E))
-
-        // requestPermissions(new String[{Manifest.permission.READ_EXTERNAL_STORAGE}, PERMISSION_REQUEST_STORAGE);
         txtShow = findViewById(R.id.textView);
         txtPreView = findViewById(R.id.textPreView);
         txtAfterView = findViewById(R.id.textAfterView);
@@ -136,7 +126,6 @@ public class MainActivity extends AppCompatActivity {
         SeekBar speedBar = findViewById(R.id.SpeedBar);
 
         progressBar = findViewById(R.id.progressBar);
-
 
         //Відкриття файлу
         Txt_Path_Show = findViewById(R.id.Txt_Path_Show);
@@ -170,8 +159,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-
-
         open_File_Btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -185,7 +172,6 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
-
     }
 
     private void requestStoragePermission() {
@@ -225,14 +211,7 @@ public class MainActivity extends AppCompatActivity {
         if (!work) {
 
             try {
-
-
                 File file = new File(path);
-                // StringBuilder test = new StringBuilder();
-                // FileInputStream fileInput = openFileInput(Environment.getExternalStorageState(), path);
-                //InputStreamReader reader = new InputStreamReader(path);
-
-                // BufferedReader buffer = new BufferedReader(new InputStreamReader(fileInput));
 
                 BufferedReader buffer = new BufferedReader(new FileReader(file));
 
@@ -246,16 +225,12 @@ public class MainActivity extends AppCompatActivity {
                 }
                 temp = strBuffer.toString();
 
-                // txtShow.setText(strBuffer.toString());
-
                 final String[] words = temp.split("\\W+");
-
 
                 final Thread ShowWord = new Thread(new Runnable() {
 
                     @Override
                     public void run() {
-
 
                         PauseIterator = 0;
 
@@ -267,14 +242,12 @@ public class MainActivity extends AppCompatActivity {
                                         public void run() {
                                             if(PauseIterator < words.length - 1 ) {
                                                 txtPreView.setText(words[PauseIterator + 1]);
-
                                             }
 
                                             txtShow.setText(words[PauseIterator]);
                                             progressBar.setProgress((int)(Math.ceil(PauseIterator*100/(words.length - 1))));
                                             if(PauseIterator > 0) {
                                                 txtAfterView.setText(words[PauseIterator - 1]);
-
                                             }
                                         }
                                     });
@@ -294,44 +267,12 @@ public class MainActivity extends AppCompatActivity {
                                 catch (Exception e) {
                                     e.printStackTrace();
                                 }
-
                             } else {
                                 break;
                             }
-
                         }
-
-
-
-
-//                    for(String word : words){
-//                        txtShow.setText(word);
-//
-//                        try {
-//                            Thread.sleep(speed);
-//                        } catch (InterruptedException e) {
-//                            e.printStackTrace();
-//                        }
-//                    }
                     }
                 });
-
-
-                /*
-                if (PauseIterator == words.length){
-                    PauseIterator = 0;
-                    Read_Btn.setText("START");                                    //PAUSE TEXT
-                    Restart_Btn.setEnabled(true);
-                    //Open_File_Btn.setEnabled(true);
-                }
-*/
-                //   Read_Btn.setText("PAUSE");
-
-
-
-
-
-
 
                 Read_Btn.setText("PAUSE");                                    //PAUSE TEXT
                 Restart_Btn.setEnabled(false);
@@ -339,7 +280,6 @@ public class MainActivity extends AppCompatActivity {
                 work = true;                                                    //WORK TRUE
 
                 ShowWord.start();
-
 
             }
             catch (Exception e) {
@@ -363,10 +303,7 @@ public class MainActivity extends AppCompatActivity {
         Toast.makeText(MainActivity.this, "Restart!", Toast.LENGTH_SHORT).show();
     }
 
-
     @SuppressLint("SetTextI18n")
-
-
 /*    public void enableButtons(int start, int restart, int open, int back){
 
         if(start == 1){
@@ -389,6 +326,3 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 }
-
-
-
