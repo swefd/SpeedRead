@@ -61,7 +61,6 @@ public class MainActivity extends AppCompatActivity {
 
     Handler mHandler = new Handler();
 
-
     public MainActivity() {
     }
 
@@ -271,8 +270,17 @@ public class MainActivity extends AppCompatActivity {
                                 break;
                             }
                         }
+                        mHandler.post(new Runnable(){
+                            public void run() {
+                        Read_Btn.setText("START");                                    //PAUSE TEXT
+                        Restart_Btn.setEnabled(true);
+                        work = false;
+                            }
+                        });
                     }
                 });
+
+
 
                 Read_Btn.setText("PAUSE");                                    //PAUSE TEXT
                 Restart_Btn.setEnabled(false);
@@ -280,6 +288,8 @@ public class MainActivity extends AppCompatActivity {
                 work = true;                                                    //WORK TRUE
 
                 ShowWord.start();
+
+
 
             }
             catch (Exception e) {
