@@ -8,8 +8,8 @@
 
     <Button
         android:id="@+id/Read"
-        android:layout_width="115dp"
-        android:layout_height="51dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:backgroundTint="#664CAF50"
         android:onClick="read"
         android:text="@string/start"

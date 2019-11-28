@@ -33,7 +33,6 @@ public class MainActivity extends AppCompatActivity {
 
     private int STORAGE_PERMISSION_CODE = 1;
     private int READ_REQUEST_CODE = 42;
-
     private TextView txtShow;
     private TextView txtPreView;
     private TextView txtAfterView;
@@ -42,12 +41,15 @@ public class MainActivity extends AppCompatActivity {
 
     private Button Read_Btn;
     private Button Restart_Btn;
+    private Button open_File_Btn;
 
     private ProgressBar progressBar;
 
     String path;
     String temp;
     String sdcardPath = getExternalStorageDirectory().toString();
+
+    Handler mHandler = new Handler();
 
     //String charset = "UTF-8";
 
@@ -59,9 +61,10 @@ public class MainActivity extends AppCompatActivity {
     boolean GoBack = false;
     boolean work = false;
 
-    Handler mHandler = new Handler();
 
     public MainActivity() {
+
+
     }
 
     @Override
@@ -129,7 +132,7 @@ public class MainActivity extends AppCompatActivity {
         //Відкриття файлу
         Txt_Path_Show = findViewById(R.id.Txt_Path_Show);
 
-        Button open_File_Btn = findViewById(R.id.Open_File_Btn);
+        open_File_Btn = findViewById(R.id.Open_File_Btn);
 
         Read_Btn = findViewById(R.id.Read);
         Restart_Btn = findViewById(R.id.Restart);
@@ -231,7 +234,6 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void run() {
 
-                        PauseIterator = 0;
 
                         for (; PauseIterator < words.length; PauseIterator++) {
 
@@ -274,7 +276,9 @@ public class MainActivity extends AppCompatActivity {
                             public void run() {
                         Read_Btn.setText("START");                                    //PAUSE TEXT
                         Restart_Btn.setEnabled(true);
+                        open_File_Btn.setEnabled(true);
                         work = false;
+
                             }
                         });
                     }
@@ -284,12 +288,10 @@ public class MainActivity extends AppCompatActivity {
 
                 Read_Btn.setText("PAUSE");                                    //PAUSE TEXT
                 Restart_Btn.setEnabled(false);
-                //Open_File_Btn.setEnabled(false);
+                open_File_Btn.setEnabled(false);
                 work = true;                                                    //WORK TRUE
 
                 ShowWord.start();
-
-
 
             }
             catch (Exception e) {
@@ -302,6 +304,7 @@ public class MainActivity extends AppCompatActivity {
 
             Read_Btn.setText("START");                                    //PAUSE TEXT
             Restart_Btn.setEnabled(true);
+            open_File_Btn.setEnabled(false);
             work = false;                                                    //WORK
         }
 
